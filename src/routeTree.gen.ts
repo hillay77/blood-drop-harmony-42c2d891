@@ -9,38 +9,180 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppRequestsRouteImport } from './routes/app.requests'
+import { Route as AppInventoryRouteImport } from './routes/app.inventory'
+import { Route as AppForecastsRouteImport } from './routes/app.forecasts'
+import { Route as AppColdChainRouteImport } from './routes/app.cold-chain'
+import { Route as AppAlertsRouteImport } from './routes/app.alerts'
+import { Route as ApiPublicCronRefreshForecastsRouteImport } from './routes/api/public/cron.refresh-forecasts'
+import { Route as ApiPublicAlertsBroadcastRouteImport } from './routes/api/public/alerts.broadcast'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRequestsRoute = AppRequestsRouteImport.update({
+  id: '/requests',
+  path: '/requests',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppInventoryRoute = AppInventoryRouteImport.update({
+  id: '/inventory',
+  path: '/inventory',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppForecastsRoute = AppForecastsRouteImport.update({
+  id: '/forecasts',
+  path: '/forecasts',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppColdChainRoute = AppColdChainRouteImport.update({
+  id: '/cold-chain',
+  path: '/cold-chain',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAlertsRoute = AppAlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => AppRoute,
+} as any)
+const ApiPublicCronRefreshForecastsRoute =
+  ApiPublicCronRefreshForecastsRouteImport.update({
+    id: '/api/public/cron/refresh-forecasts',
+    path: '/api/public/cron/refresh-forecasts',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicAlertsBroadcastRoute =
+  ApiPublicAlertsBroadcastRouteImport.update({
+    id: '/api/public/alerts/broadcast',
+    path: '/api/public/alerts/broadcast',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/app/alerts': typeof AppAlertsRoute
+  '/app/cold-chain': typeof AppColdChainRoute
+  '/app/forecasts': typeof AppForecastsRoute
+  '/app/inventory': typeof AppInventoryRoute
+  '/app/requests': typeof AppRequestsRoute
+  '/app/': typeof AppIndexRoute
+  '/api/public/alerts/broadcast': typeof ApiPublicAlertsBroadcastRoute
+  '/api/public/cron/refresh-forecasts': typeof ApiPublicCronRefreshForecastsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/app/alerts': typeof AppAlertsRoute
+  '/app/cold-chain': typeof AppColdChainRoute
+  '/app/forecasts': typeof AppForecastsRoute
+  '/app/inventory': typeof AppInventoryRoute
+  '/app/requests': typeof AppRequestsRoute
+  '/app': typeof AppIndexRoute
+  '/api/public/alerts/broadcast': typeof ApiPublicAlertsBroadcastRoute
+  '/api/public/cron/refresh-forecasts': typeof ApiPublicCronRefreshForecastsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/app/alerts': typeof AppAlertsRoute
+  '/app/cold-chain': typeof AppColdChainRoute
+  '/app/forecasts': typeof AppForecastsRoute
+  '/app/inventory': typeof AppInventoryRoute
+  '/app/requests': typeof AppRequestsRoute
+  '/app/': typeof AppIndexRoute
+  '/api/public/alerts/broadcast': typeof ApiPublicAlertsBroadcastRoute
+  '/api/public/cron/refresh-forecasts': typeof ApiPublicCronRefreshForecastsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/auth'
+    | '/app/alerts'
+    | '/app/cold-chain'
+    | '/app/forecasts'
+    | '/app/inventory'
+    | '/app/requests'
+    | '/app/'
+    | '/api/public/alerts/broadcast'
+    | '/api/public/cron/refresh-forecasts'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/app/alerts'
+    | '/app/cold-chain'
+    | '/app/forecasts'
+    | '/app/inventory'
+    | '/app/requests'
+    | '/app'
+    | '/api/public/alerts/broadcast'
+    | '/api/public/cron/refresh-forecasts'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/auth'
+    | '/app/alerts'
+    | '/app/cold-chain'
+    | '/app/forecasts'
+    | '/app/inventory'
+    | '/app/requests'
+    | '/app/'
+    | '/api/public/alerts/broadcast'
+    | '/api/public/cron/refresh-forecasts'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ApiPublicAlertsBroadcastRoute: typeof ApiPublicAlertsBroadcastRoute
+  ApiPublicCronRefreshForecastsRoute: typeof ApiPublicCronRefreshForecastsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +190,91 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/requests': {
+      id: '/app/requests'
+      path: '/requests'
+      fullPath: '/app/requests'
+      preLoaderRoute: typeof AppRequestsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/inventory': {
+      id: '/app/inventory'
+      path: '/inventory'
+      fullPath: '/app/inventory'
+      preLoaderRoute: typeof AppInventoryRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/forecasts': {
+      id: '/app/forecasts'
+      path: '/forecasts'
+      fullPath: '/app/forecasts'
+      preLoaderRoute: typeof AppForecastsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/cold-chain': {
+      id: '/app/cold-chain'
+      path: '/cold-chain'
+      fullPath: '/app/cold-chain'
+      preLoaderRoute: typeof AppColdChainRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/alerts': {
+      id: '/app/alerts'
+      path: '/alerts'
+      fullPath: '/app/alerts'
+      preLoaderRoute: typeof AppAlertsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/api/public/cron/refresh-forecasts': {
+      id: '/api/public/cron/refresh-forecasts'
+      path: '/api/public/cron/refresh-forecasts'
+      fullPath: '/api/public/cron/refresh-forecasts'
+      preLoaderRoute: typeof ApiPublicCronRefreshForecastsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/alerts/broadcast': {
+      id: '/api/public/alerts/broadcast'
+      path: '/api/public/alerts/broadcast'
+      fullPath: '/api/public/alerts/broadcast'
+      preLoaderRoute: typeof ApiPublicAlertsBroadcastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppAlertsRoute: typeof AppAlertsRoute
+  AppColdChainRoute: typeof AppColdChainRoute
+  AppForecastsRoute: typeof AppForecastsRoute
+  AppInventoryRoute: typeof AppInventoryRoute
+  AppRequestsRoute: typeof AppRequestsRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAlertsRoute: AppAlertsRoute,
+  AppColdChainRoute: AppColdChainRoute,
+  AppForecastsRoute: AppForecastsRoute,
+  AppInventoryRoute: AppInventoryRoute,
+  AppRequestsRoute: AppRequestsRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ApiPublicAlertsBroadcastRoute: ApiPublicAlertsBroadcastRoute,
+  ApiPublicCronRefreshForecastsRoute: ApiPublicCronRefreshForecastsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
