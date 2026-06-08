@@ -5,14 +5,15 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
-const nav = [
+type NavItem = { to: string; label: string; icon: typeof Droplets; exact?: boolean };
+const nav: NavItem[] = [
   { to: "/app", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/app/inventory", label: "Inventory", icon: Boxes },
   { to: "/app/cold-chain", label: "Cold Chain", icon: Snowflake },
   { to: "/app/forecasts", label: "Forecasts", icon: TrendingDown },
   { to: "/app/requests", label: "Requests", icon: Ambulance },
   { to: "/app/alerts", label: "SMS Alerts", icon: Radio },
-] as const;
+];
 
 export function AppShell({ children, email }: { children: ReactNode; email?: string | null }) {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export function AppShell({ children, email }: { children: ReactNode; email?: str
           <span className="font-display font-bold">Nakandulo</span>
         </div>
         <nav className="flex-1 p-3 space-y-1">
-          {nav.map(({ to, label, icon: Icon, exact }) => {
+          {nav.map(({ to, label, icon: Icon, exact }: NavItem) => {
             const active = exact ? path === to : path.startsWith(to);
             return (
               <Link key={to} to={to} className={cn(
