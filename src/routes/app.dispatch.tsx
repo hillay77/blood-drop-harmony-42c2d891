@@ -4,6 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Ambulance } from "lucide-react";
@@ -22,7 +24,7 @@ function DispatchPage() {
     queryFn: async () => {
       const { data } = await supabase
         .from("dispatches")
-        .select("id, status, distance_km, eta_minutes, created_at, dispatched_at, delivered_at, hub:hubs(name, city), request:blood_requests(blood_group, rh, units_needed, urgency, hospital:hospitals(name, city))")
+        .select("id, status, distance_km, eta_minutes, created_at, dispatched_at, delivered_at, hub:hubs(name, region), request:blood_requests(blood_group, rh, units_needed, urgency, hospital:hospitals(name, region))")
         .order("created_at", { ascending: false })
         .limit(50);
       return data ?? [];
@@ -44,7 +46,7 @@ function DispatchPage() {
   const { data: hubs } = useQuery({
     queryKey: ["hubs-list"],
     queryFn: async () => {
-      const { data } = await supabase.from("hubs").select("id, name, city");
+      const { data } = await supabase.from("hubs").select("id, name, region");
       return data ?? [];
     },
   });
@@ -89,21 +91,24 @@ function DispatchPage() {
         <CardHeader><CardTitle>New dispatch</CardTitle></CardHeader>
         <CardContent>
           <form onSubmit={(e) => { e.preventDefault(); create.mutate(new FormData(e.currentTarget)); }} className="grid gap-3 sm:grid-cols-4">
-            <Select name="request_id"><SelectTrigger><SelectValue placeholder="Request" /></SelectTrigger>
-              <SelectContent>{(openRequests ?? []).map((r: any) => (
-                <SelectItem key={r.id} value={r.id}>{r.hospital?.name} · {r.blood_group}{r.rh === "positive" ? "+" : "-"} ×{r.units_needed} ({r.urgency})</SelectItem>
-              ))}</SelectContent>
-            </Select>
-            <Select name="hub_id"><SelectTrigger><SelectValue placeholder="Source hub" /></SelectTrigger>
-              <SelectContent>{(hubs ?? []).map((h: any) => <SelectItem key={h.id} value={h.id}>{h.name} · {h.city}</SelectItem>)}</SelectContent>
-            </Select>
-            <Select name="eta_minutes" defaultValue="30"><SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent>{[15, 30, 45, 60, 90, 120].map(n => <SelectItem key={n} value={String(n)}>{n} min ETA</SelectItem>)}</SelectContent>
-            </Select>
-            <Button type="submit" disabled={create.isPending}><Ambulance className="h-4 w-4 mr-2" />Dispatch</Button>
+            <div className="space-y-1"><Label>Request</Label>
+              <Select name="request_id"><SelectTrigger><SelectValue placeholder="Select request" /></SelectTrigger>
+                <SelectContent>{(openRequests ?? []).map((r: any) => (
+                  <SelectItem key={r.id} value={r.id}>{r.hospital?.name} · {r.blood_group}{r.rh === "positive" ? "+" : "-"} ×{r.units_needed} ({r.urgency})</SelectItem>
+                ))}</SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1"><Label>Source hub</Label>
+              <Select name="hub_id"><SelectTrigger><SelectValue placeholder="Select hub" /></SelectTrigger>
+                <SelectContent>{(hubs ?? []).map((h: any) => <SelectItem key={h.id} value={h.id}>{h.name} · {h.region}</SelectItem>)}</SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1"><Label>ETA (minutes)</Label><Input name="eta_minutes" type="number" min={1} defaultValue={30} required /></div>
+            <div className="flex items-end"><Button type="submit" disabled={create.isPending} className="w-full"><Ambulance className="h-4 w-4 mr-2" />Dispatch</Button></div>
           </form>
         </CardContent>
       </Card>
+
 
       <Card>
         <CardHeader><CardTitle>Active & recent dispatches</CardTitle></CardHeader>
@@ -116,7 +121,7 @@ function DispatchPage() {
             <TableBody>
               {(dispatches ?? []).map((d: any) => (
                 <TableRow key={d.id}>
-                  <TableCell>{d.request?.hospital?.name}<div className="text-xs text-muted-foreground">{d.request?.hospital?.city}</div></TableCell>
+                  <TableCell>{d.request?.hospital?.name}<div className="text-xs text-muted-foreground">{d.request?.hospital?.region}</div></TableCell>
                   <TableCell>{d.hub?.name}</TableCell>
                   <TableCell className="font-medium">{d.request?.blood_group}{d.request?.rh === "positive" ? "+" : "-"} ×{d.request?.units_needed}</TableCell>
                   <TableCell>{d.eta_minutes ?? "—"} min</TableCell>

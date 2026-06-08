@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Droplets, LayoutDashboard, Boxes, Snowflake, TrendingDown, Ambulance, Radio, LogOut, Siren, BarChart3 } from "lucide-react";
+import { Droplets, LayoutDashboard, Boxes, Snowflake, TrendingDown, Ambulance, Radio, LogOut, Siren, BarChart3, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,7 @@ const nav: NavItem[] = [
   { to: "/app/dispatch", label: "Emergency Dispatch", icon: Siren },
   { to: "/app/alerts", label: "SMS Alerts", icon: Radio },
   { to: "/app/reports", label: "Reports", icon: BarChart3 },
+  { to: "/app/settings", label: "Settings", icon: Settings },
 ];
 
 export function AppShell({ children, email }: { children: ReactNode; email?: string | null }) {

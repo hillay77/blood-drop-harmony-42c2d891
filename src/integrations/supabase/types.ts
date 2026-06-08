@@ -539,7 +539,12 @@ export type Database = {
     }
     Enums: {
       alert_status: "queued" | "sent" | "failed" | "delivered"
-      app_role: "admin" | "hub_staff" | "hospital_requester" | "donor"
+      app_role:
+        | "admin"
+        | "hub_staff"
+        | "hospital_requester"
+        | "donor"
+        | "dispatch_coordinator"
       blood_group: "A" | "B" | "AB" | "O"
       dispatch_status: "pending" | "in_transit" | "delivered" | "cancelled"
       request_status:
@@ -684,7 +689,13 @@ export const Constants = {
   public: {
     Enums: {
       alert_status: ["queued", "sent", "failed", "delivered"],
-      app_role: ["admin", "hub_staff", "hospital_requester", "donor"],
+      app_role: [
+        "admin",
+        "hub_staff",
+        "hospital_requester",
+        "donor",
+        "dispatch_coordinator",
+      ],
       blood_group: ["A", "B", "AB", "O"],
       dispatch_status: ["pending", "in_transit", "delivered", "cancelled"],
       request_status: [
