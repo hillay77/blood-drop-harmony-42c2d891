@@ -17,6 +17,20 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
+
+  async function sendReset(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    const f = new FormData(e.currentTarget);
+    const { error } = await supabase.auth.resetPasswordForEmail(String(f.get("email")), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (error) return toast.error(error.message);
+    toast.success("Password reset email sent");
+    setResetOpen(false);
+  }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -76,11 +90,20 @@ function AuthPage() {
                 <TabsTrigger value="signup">Sign up</TabsTrigger>
               </TabsList>
               <TabsContent value="signin">
-                <form onSubmit={signIn} className="space-y-4 mt-4">
-                  <div className="space-y-2"><Label htmlFor="si-email">Email</Label><Input id="si-email" name="email" type="email" required /></div>
-                  <div className="space-y-2"><Label htmlFor="si-pw">Password</Label><Input id="si-pw" name="password" type="password" required /></div>
-                  <Button type="submit" className="w-full" disabled={loading}>{loading ? "Signing in…" : "Sign in"}</Button>
-                </form>
+                {resetOpen ? (
+                  <form onSubmit={sendReset} className="space-y-4 mt-4">
+                    <div className="space-y-2"><Label htmlFor="r-email">Email</Label><Input id="r-email" name="email" type="email" required /></div>
+                    <Button type="submit" className="w-full" disabled={loading}>{loading ? "Sending…" : "Send reset link"}</Button>
+                    <button type="button" className="block w-full text-center text-sm text-muted-foreground hover:text-foreground" onClick={() => setResetOpen(false)}>Back to sign in</button>
+                  </form>
+                ) : (
+                  <form onSubmit={signIn} className="space-y-4 mt-4">
+                    <div className="space-y-2"><Label htmlFor="si-email">Email</Label><Input id="si-email" name="email" type="email" required /></div>
+                    <div className="space-y-2"><Label htmlFor="si-pw">Password</Label><Input id="si-pw" name="password" type="password" required /></div>
+                    <Button type="submit" className="w-full" disabled={loading}>{loading ? "Signing in…" : "Sign in"}</Button>
+                    <button type="button" className="block w-full text-center text-sm text-muted-foreground hover:text-foreground" onClick={() => setResetOpen(true)}>Forgot password?</button>
+                  </form>
+                )}
               </TabsContent>
               <TabsContent value="signup">
                 <form onSubmit={signUp} className="space-y-4 mt-4">
