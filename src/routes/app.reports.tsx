@@ -93,7 +93,7 @@ function ReportsPage() {
     sections().forEach((s) => {
       const head = s.rows.length ? [Object.keys(s.rows[0])] : [["info"]];
       const body = s.rows.length ? s.rows.map((r: any) => Object.values(r).map((v) => String(v ?? ""))) : [["no data"]];
-      autoTable(doc, { startY: y, head, body, headStyles: { fillColor: [30, 41, 59] }, didDrawPage: (d) => { doc.setFontSize(12); doc.text(s.name, 14, d.cursor.y ? y - 4 : y); } });
+      autoTable(doc, { startY: y, head, body, headStyles: { fillColor: [30, 41, 59] }, didDrawPage: () => { doc.setFontSize(12); doc.text(s.name, 14, y - 4); } });
       y = (doc as any).lastAutoTable.finalY + 12;
     });
     doc.save(`nakandulo-reports-${Date.now()}.pdf`);
