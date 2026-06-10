@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Activity, Droplets, Snowflake, Radio, ShieldCheck, TrendingDown } from "lucide-react";
+import { Activity, Droplets, Snowflake, Radio, TrendingDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
