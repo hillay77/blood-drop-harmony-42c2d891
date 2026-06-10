@@ -18,7 +18,7 @@ const features = [
   { icon: Snowflake, title: "Cold-Chain Monitoring", desc: "Continuous storage temperature readings with depletion-risk alerts." },
   { icon: Activity, title: "Emergency Dispatch", desc: "FEFO matching and haversine routing between hospitals and donor hubs." },
   { icon: Radio, title: "Rare-Phenotype SMS", desc: "Automated Twilio alerts to opted-in donors when rare matches are needed." },
-  { icon: ShieldCheck, title: "Role-Based Security", desc: "Row-level security for admins, hub staff, hospitals, and donors." },
+  
 ];
 
 function Landing() {
