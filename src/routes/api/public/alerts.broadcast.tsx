@@ -15,7 +15,7 @@ export const Route = createFileRoute("/api/public/alerts/broadcast")({
       POST: async ({ request }) => {
         const parsed = Body.safeParse(await request.json().catch(() => ({})));
         if (!parsed.success) return new Response("Invalid body", { status: 400 });
-        const { blood_group, rh, phenotype_required, message } = parsed.data;
+        const { blood_group, rh, phenotype_required, message, recipients } = parsed.data;
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
