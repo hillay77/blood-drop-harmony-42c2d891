@@ -72,6 +72,9 @@ function RequestsPage() {
         const { error } = await supabase.from("blood_requests").update(payload).eq("id", id);
         if (error) throw error;
       } else {
+        const { data: u } = await supabase.auth.getUser();
+        if (!u?.user) throw new Error("You must be signed in to create a request");
+        payload.requester_id = u.user.id;
         const { error } = await supabase.from("blood_requests").insert(payload);
         if (error) throw error;
       }
