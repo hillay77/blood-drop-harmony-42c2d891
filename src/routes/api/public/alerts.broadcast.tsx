@@ -61,14 +61,13 @@ export const Route = createFileRoute("/api/public/alerts/broadcast")({
             } catch (e: any) { status = "failed"; error_message = e?.message ?? "send_failed"; }
           }
           await supabaseAdmin.from("match_alerts").insert({
-            donor_id: t.donor_id,
+            donor_id: t.donor_id ?? undefined,
             phone: t.phone,
             message: `[${blood_group}${rh === "positive" ? "+" : "-"}${phenotype_required.length ? " · " + phenotype_required.join(",") : ""}] ${message}`,
             status,
             twilio_sid,
             error_message,
-            sent_at: status === "sent" ? new Date().toISOString() : null,
-          });
+          } as any);
           queued++;
         }
 
