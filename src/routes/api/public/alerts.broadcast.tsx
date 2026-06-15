@@ -6,6 +6,7 @@ const Body = z.object({
   rh: z.enum(["positive", "negative"]),
   phenotype_required: z.array(z.string().min(1).max(40)).max(10).default([]),
   message: z.string().min(1).max(320),
+  recipients: z.array(z.string().trim().min(5).max(20)).max(50).default([]),
 });
 
 export const Route = createFileRoute("/api/public/alerts/broadcast")({
