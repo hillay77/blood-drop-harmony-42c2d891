@@ -68,6 +68,7 @@ function AlertsPage() {
             <div className="space-y-2"><Label>Blood group</Label><Input name="blood_group" defaultValue="O" /></div>
             <div className="space-y-2"><Label>Rh</Label><Input name="rh" defaultValue="negative" /></div>
             <div className="space-y-2 sm:col-span-2"><Label>Phenotype tags (comma)</Label><Input name="phenotype" placeholder="Bombay, Kell-" /></div>
+            <div className="space-y-2 sm:col-span-2"><Label>Direct recipients (comma phones, E.164)</Label><Input name="recipients" placeholder="+256752255300, +15558675310" /></div>
             <div className="space-y-2 sm:col-span-2"><Label>Message</Label><Input name="message" placeholder="Urgent match needed at Manila Central Hub" required /></div>
             <div className="sm:col-span-2"><Button type="submit" disabled={broadcast.isPending}><Radio className="h-4 w-4 mr-2" />{broadcast.isPending ? "Broadcasting…" : "Send broadcast"}</Button></div>
           </form>
