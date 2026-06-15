@@ -17,11 +17,13 @@ import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppRequestsRouteImport } from './routes/app.requests'
 import { Route as AppReportsRouteImport } from './routes/app.reports'
+import { Route as AppNotificationsRouteImport } from './routes/app.notifications'
 import { Route as AppInventoryRouteImport } from './routes/app.inventory'
 import { Route as AppForecastsRouteImport } from './routes/app.forecasts'
 import { Route as AppDispatchRouteImport } from './routes/app.dispatch'
 import { Route as AppColdChainRouteImport } from './routes/app.cold-chain'
 import { Route as AppAlertsRouteImport } from './routes/app.alerts'
+import { Route as ApiNotifyEmailRouteImport } from './routes/api/notify.email'
 import { Route as ApiPublicCronRefreshForecastsRouteImport } from './routes/api/public/cron.refresh-forecasts'
 import { Route as ApiPublicAlertsBroadcastRouteImport } from './routes/api/public/alerts.broadcast'
 
@@ -65,6 +67,11 @@ const AppReportsRoute = AppReportsRouteImport.update({
   path: '/reports',
   getParentRoute: () => AppRoute,
 } as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppInventoryRoute = AppInventoryRouteImport.update({
   id: '/inventory',
   path: '/inventory',
@@ -90,6 +97,11 @@ const AppAlertsRoute = AppAlertsRouteImport.update({
   path: '/alerts',
   getParentRoute: () => AppRoute,
 } as any)
+const ApiNotifyEmailRoute = ApiNotifyEmailRouteImport.update({
+  id: '/api/notify/email',
+  path: '/api/notify/email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicCronRefreshForecastsRoute =
   ApiPublicCronRefreshForecastsRouteImport.update({
     id: '/api/public/cron/refresh-forecasts',
@@ -113,10 +125,12 @@ export interface FileRoutesByFullPath {
   '/app/dispatch': typeof AppDispatchRoute
   '/app/forecasts': typeof AppForecastsRoute
   '/app/inventory': typeof AppInventoryRoute
+  '/app/notifications': typeof AppNotificationsRoute
   '/app/reports': typeof AppReportsRoute
   '/app/requests': typeof AppRequestsRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/': typeof AppIndexRoute
+  '/api/notify/email': typeof ApiNotifyEmailRoute
   '/api/public/alerts/broadcast': typeof ApiPublicAlertsBroadcastRoute
   '/api/public/cron/refresh-forecasts': typeof ApiPublicCronRefreshForecastsRoute
 }
@@ -129,10 +143,12 @@ export interface FileRoutesByTo {
   '/app/dispatch': typeof AppDispatchRoute
   '/app/forecasts': typeof AppForecastsRoute
   '/app/inventory': typeof AppInventoryRoute
+  '/app/notifications': typeof AppNotificationsRoute
   '/app/reports': typeof AppReportsRoute
   '/app/requests': typeof AppRequestsRoute
   '/app/settings': typeof AppSettingsRoute
   '/app': typeof AppIndexRoute
+  '/api/notify/email': typeof ApiNotifyEmailRoute
   '/api/public/alerts/broadcast': typeof ApiPublicAlertsBroadcastRoute
   '/api/public/cron/refresh-forecasts': typeof ApiPublicCronRefreshForecastsRoute
 }
@@ -147,10 +163,12 @@ export interface FileRoutesById {
   '/app/dispatch': typeof AppDispatchRoute
   '/app/forecasts': typeof AppForecastsRoute
   '/app/inventory': typeof AppInventoryRoute
+  '/app/notifications': typeof AppNotificationsRoute
   '/app/reports': typeof AppReportsRoute
   '/app/requests': typeof AppRequestsRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/': typeof AppIndexRoute
+  '/api/notify/email': typeof ApiNotifyEmailRoute
   '/api/public/alerts/broadcast': typeof ApiPublicAlertsBroadcastRoute
   '/api/public/cron/refresh-forecasts': typeof ApiPublicCronRefreshForecastsRoute
 }
@@ -166,10 +184,12 @@ export interface FileRouteTypes {
     | '/app/dispatch'
     | '/app/forecasts'
     | '/app/inventory'
+    | '/app/notifications'
     | '/app/reports'
     | '/app/requests'
     | '/app/settings'
     | '/app/'
+    | '/api/notify/email'
     | '/api/public/alerts/broadcast'
     | '/api/public/cron/refresh-forecasts'
   fileRoutesByTo: FileRoutesByTo
@@ -182,10 +202,12 @@ export interface FileRouteTypes {
     | '/app/dispatch'
     | '/app/forecasts'
     | '/app/inventory'
+    | '/app/notifications'
     | '/app/reports'
     | '/app/requests'
     | '/app/settings'
     | '/app'
+    | '/api/notify/email'
     | '/api/public/alerts/broadcast'
     | '/api/public/cron/refresh-forecasts'
   id:
@@ -199,10 +221,12 @@ export interface FileRouteTypes {
     | '/app/dispatch'
     | '/app/forecasts'
     | '/app/inventory'
+    | '/app/notifications'
     | '/app/reports'
     | '/app/requests'
     | '/app/settings'
     | '/app/'
+    | '/api/notify/email'
     | '/api/public/alerts/broadcast'
     | '/api/public/cron/refresh-forecasts'
   fileRoutesById: FileRoutesById
@@ -212,6 +236,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiNotifyEmailRoute: typeof ApiNotifyEmailRoute
   ApiPublicAlertsBroadcastRoute: typeof ApiPublicAlertsBroadcastRoute
   ApiPublicCronRefreshForecastsRoute: typeof ApiPublicCronRefreshForecastsRoute
 }
@@ -274,6 +299,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppReportsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/notifications': {
+      id: '/app/notifications'
+      path: '/notifications'
+      fullPath: '/app/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/inventory': {
       id: '/app/inventory'
       path: '/inventory'
@@ -309,6 +341,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAlertsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/api/notify/email': {
+      id: '/api/notify/email'
+      path: '/api/notify/email'
+      fullPath: '/api/notify/email'
+      preLoaderRoute: typeof ApiNotifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/cron/refresh-forecasts': {
       id: '/api/public/cron/refresh-forecasts'
       path: '/api/public/cron/refresh-forecasts'
@@ -332,6 +371,7 @@ interface AppRouteChildren {
   AppDispatchRoute: typeof AppDispatchRoute
   AppForecastsRoute: typeof AppForecastsRoute
   AppInventoryRoute: typeof AppInventoryRoute
+  AppNotificationsRoute: typeof AppNotificationsRoute
   AppReportsRoute: typeof AppReportsRoute
   AppRequestsRoute: typeof AppRequestsRoute
   AppSettingsRoute: typeof AppSettingsRoute
@@ -344,6 +384,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppDispatchRoute: AppDispatchRoute,
   AppForecastsRoute: AppForecastsRoute,
   AppInventoryRoute: AppInventoryRoute,
+  AppNotificationsRoute: AppNotificationsRoute,
   AppReportsRoute: AppReportsRoute,
   AppRequestsRoute: AppRequestsRoute,
   AppSettingsRoute: AppSettingsRoute,
@@ -357,6 +398,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ApiNotifyEmailRoute: ApiNotifyEmailRoute,
   ApiPublicAlertsBroadcastRoute: ApiPublicAlertsBroadcastRoute,
   ApiPublicCronRefreshForecastsRoute: ApiPublicCronRefreshForecastsRoute,
 }
