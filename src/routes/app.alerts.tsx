@@ -36,6 +36,7 @@ function AlertsPage() {
         rh: form.get("rh"),
         phenotype_required: String(form.get("phenotype") || "").split(",").map((s) => s.trim()).filter(Boolean),
         message: String(form.get("message")),
+        recipients: String(form.get("recipients") || "").split(",").map((s) => s.trim()).filter(Boolean),
       };
       const r = await fetch("/api/public/alerts/broadcast", {
         method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload),
